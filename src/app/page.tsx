@@ -9,6 +9,7 @@ import Logout from "@/app/logout"
 import {useTRPC} from '@/trpc/client'
 import {useQuery, useMutation} from '@tanstack/react-query'
 import {useQueryClient} from '@tanstack/react-query'
+import { toast } from 'sonner';
 
 
 const Page = () => {
@@ -18,7 +19,7 @@ const Page = () => {
   const {data} = useQuery(trpc.getWorkflows.queryOptions())
   const  create = useMutation(trpc.createWorkflow.mutationOptions({
     onSuccess:()=>{
-      queryClient.invalidateQueries(trpc.getWorkflows.queryOptions())
+      toast.success("Job queued")
     }
   }))
 

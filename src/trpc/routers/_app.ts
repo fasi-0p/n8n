@@ -1,5 +1,7 @@
 import { createTRPCRouter, protectedProcedure } from '../init';
 import prisma from '@/lib/db';
+import {inngest} from '@/inngest/client';
+import { NextResponse } from "next/server";
 
 export const appRouter = createTRPCRouter({
   getWorkflows: protectedProcedure.query(({ ctx }) => {
@@ -7,20 +9,20 @@ export const appRouter = createTRPCRouter({
   }),
 
   createWorkflow: protectedProcedure.mutation(async () => {
-    //fetch vid
-    await new Promise((resolve) => setTimeout(resolve, 5_000));
-
-    //transcribe vid
-    await new Promise((resolve) => setTimeout(resolve, 5_000));
-
-    //send trancription to openai
-    await new Promise((resolve) => setTimeout(resolve, 5_000));
-
-    return prisma.workflow.create({
-      data: {
-        name: "test-workflow"
+    await inngest.send({
+      name: 'test/hello.world',
+      data:{
+        email: 'temp@gmail.com',
+        name: 'temp'
       },
     });
+    return {success: true, message:"Job queued"}
+
+    // return prisma.workflow.create({  //Not needed, shifted to src/inngest/functions.ts
+    //   data: {
+    //     name: "test-workflow"
+    //   },
+    // });
   }),
 });
 
