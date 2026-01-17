@@ -13,6 +13,7 @@ export const useSuspenseWorkflows = () => {
   return useSuspenseQuery(trpc.workflows.getMany.queryOptions(params));
 };
 
+
 export const useCreateWorkflow = () => {
   const queryClient = useQueryClient();
   const trpc = useTRPC();
@@ -35,7 +36,7 @@ export const useCreateWorkflow = () => {
 /**
  * Hook to remove all workflows
  */
-
+//given which isnt working
 // export const useRemoveWorkflow = () =>{
 //   const trpc = useTRPC();
 //   const queryClient = useQueryClient();
@@ -51,6 +52,7 @@ export const useCreateWorkflow = () => {
 //     })
 //   )
 // }
+//converted working one
 export const useRemoveWorkflow = () => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
@@ -70,6 +72,59 @@ export const useRemoveWorkflow = () => {
       },
       onError: (error) => {
         toast.error(`Failed to remove workflow: ${error.message}`);
+      },
+    }),
+  );
+};
+
+export const useSuspenseWorkflow = (id: string)=> {
+  const trpc = useTRPC();
+  return useSuspenseQuery(trpc.workflows.getOne.queryOptions({id}));
+}
+
+//hook to update workflow name
+//given which isnt working
+// export const useUpdateWorkflow = () => {
+//   const queryClient = useQueryClient();
+//   const trpc = useTRPC();
+
+//   return useMutation(
+//     trpc.workflows.updateName.mutationOptions({
+//       onSuccess: (data) => {
+//         toast.success(`Workflow "${data.name}" updated`);
+//         queryClient.invalidateQueries(
+//           trpc.workflows.getMany.queryOptions({}),
+//         );
+//         queryClient.invalidateQueries(
+//           trpc.workflows.getOne.queryFilter({ id: data.id }),
+//         );
+//       },
+//       onError: (error) => {
+//         toast.error(`Failed to update workflow: ${error.message}`);
+//       },
+//     }),
+//   );
+// };
+//converted working one
+export const useUpdateWorkflow = () => {
+  const queryClient = useQueryClient();
+  const trpc = useTRPC();
+
+  return useMutation(
+    trpc.workflows.updateName.mutationOptions({
+      onSuccess: (data, variables) => {
+        toast.success(`Updated workflow`);
+
+        queryClient.invalidateQueries(
+          trpc.workflows.getMany.queryOptions({}),
+        );
+
+        queryClient.invalidateQueries(
+          trpc.workflows.getOne.queryFilter({ id: variables.id }),
+        );
+      },
+      onError: (error) => {
+        toast.error(`Failed to update workflow: ${error.message}`);
       },
     }),
   );
