@@ -3,13 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { SaveIcon } from "lucide-react";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import {Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator,} from "@/components/ui/breadcrumb";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSuspenseWorkflow, useUpdateWorkflow } from "@/features/workflows/hooks/use-workflows";

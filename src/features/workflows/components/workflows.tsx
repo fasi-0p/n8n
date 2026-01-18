@@ -133,11 +133,40 @@ export const WorkflowsEmpty = () =>{
   )
 }
 
-export const WorkflowItem = ({data,}: {data:Workflow}) => {
+
+// export const WorkflowItem = ({data,}: {data:Workflow}) => {
+//   const removeWorkflow = useRemoveWorkflow();
+//   const handleRemove = () =>{
+//     removeWorkflow.mutate({id: data.id});
+//   }
+
+//   return (
+//     <EntityItem
+//       href={`/workflows/${data.id}`}
+//       title={data.name}
+//       subtitle={
+//         <>
+//           Updated {formatDistanceToNow(data.updatedAt, {addSuffix: true})} {" "}
+//           &bull; Created{" "}
+//           {formatDistanceToNow(data.updatedAt, {addSuffix: true} )}
+//         </>
+//       }
+//       image={
+//         <div className="size-8 flex items-center justify-center">
+//           <WorkflowIcon className="size-5 text-muted-foreground"/>
+//         </div>
+//       }
+//       onRemove={handleRemove}
+//       isRemoving={removeWorkflow.isPending}
+//     />
+//   )
+// }
+export const WorkflowItem = ({ data }: { data: Workflow }) => {
   const removeWorkflow = useRemoveWorkflow();
-  const handleRemove = () =>{
-    removeWorkflow.mutate({id: data.id});
-  }
+
+  const handleRemove = () => {
+    removeWorkflow.mutate({ id: data.id });
+  };
 
   return (
     <EntityItem
@@ -145,18 +174,23 @@ export const WorkflowItem = ({data,}: {data:Workflow}) => {
       title={data.name}
       subtitle={
         <>
-          Updated {formatDistanceToNow(data.updatedAt, {addSuffix: true})} {" "}
+          Updated{" "}
+          <span suppressHydrationWarning>
+            {formatDistanceToNow(data.updatedAt, { addSuffix: true })}
+          </span>{" "}
           &bull; Created{" "}
-          {formatDistanceToNow(data.updatedAt, {addSuffix: true} )}
+          <span suppressHydrationWarning>
+            {formatDistanceToNow(data.createdAt, { addSuffix: true })}
+          </span>
         </>
       }
       image={
         <div className="size-8 flex items-center justify-center">
-          <WorkflowIcon className="size-5 text-muted-foreground"/>
+          <WorkflowIcon className="size-5 text-muted-foreground" />
         </div>
       }
       onRemove={handleRemove}
       isRemoving={removeWorkflow.isPending}
     />
-  )
-}
+  );
+};
