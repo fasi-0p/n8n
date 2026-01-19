@@ -5,6 +5,7 @@ import { TRPCReactProvider } from "@/trpc/client";
 import { Toaster } from "sonner";
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { type ReactNode } from 'react'
+import {Provider} from 'jotai'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,8 +34,10 @@ export default function RootLayout({
       >
         <TRPCReactProvider> 
           <NuqsAdapter>
-            {children}
-            <Toaster/>
+            <Provider>
+              {children}
+              <Toaster/>
+            </Provider>
           </NuqsAdapter>
         </TRPCReactProvider>
       </body>

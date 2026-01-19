@@ -6,13 +6,34 @@ import { SaveIcon } from "lucide-react";
 import {Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator,} from "@/components/ui/breadcrumb";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useSuspenseWorkflow, useUpdateWorkflow } from "@/features/workflows/hooks/use-workflows";
+import { useSuspenseWorkflow, useUpdateWorkflowName, useUpdateWorkflow } from "@/features/workflows/hooks/use-workflows";
 import { Input } from "@/components/ui/input";
+import { useAtomValue } from "jotai";
+import { editorAtom } from "@/features/editor/store/atoms";
 
 export const EditorSaveButton = ({ workflowId }: { workflowId: string }) => {
+  const editor = useAtomValue(editorAtom);
+  const saveWorkflow = useUpdateWorkflow()
+
+  const handleSave = ()=>{
+    if (!editor){
+      return;
+    }
+
+    const nodes=editor.getNodes();
+    const edges=editor.getEdges();
+
+    saveWorkflow.mutate({
+      id: workflowId,
+      nodes,
+      edges
+    });
+
+  }
+
   return (
     <div className="ml-auto">
-      <Button size="sm" onClick={() => {}} disabled={false}>
+      <Button size="sm" onClick={handleSave} disabled={saveWorkflow.isPending}>
         <SaveIcon className="size-4" />
         Save
       </Button>
@@ -51,7 +72,7 @@ export const EditorActions = ({ workflowId }: { workflowId: string }) => {
 
 export const EditorNameInput = ({ workflowId }: { workflowId: string }) => {
   const { data: workflow } = useSuspenseWorkflow(workflowId);
-  const updateWorkflow = useUpdateWorkflow();
+  const updateWorkflow = useUpdateWorkflowName();
 
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(workflow.name);
