@@ -16,7 +16,7 @@ export const workflowsRouter = createTRPCRouter({  //CRUD
       where: {id: input.id, userId: ctx.auth.user.id},
     });
     
-    await inngest.send({name: "workflows/execute.workflow", data:{workflowId: input.id}})
+    await inngest.send({name: "workflows/execute.workflow", data:{workflowId: input.id,}})
     return workflow
   }),
 

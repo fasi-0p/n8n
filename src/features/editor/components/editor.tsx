@@ -9,7 +9,7 @@ import { nodeComponents } from '@/config/node-components';
 import { AddNodeButton } from "@/features/editor/components/add-node-button";
 import {useSetAtom} from "jotai";
 import {editorAtom} from "@/features/editor/store/atoms";
-import {NodeType} from "@/generated/prisma/browser";  //or client idk
+import {NodeType} from "@/generated/prisma/browser";
 import {ExecuteWorkflowButton} from "@/features/editor/components/execute-workflow-button";
 
 export const EditorLoading = () => {
