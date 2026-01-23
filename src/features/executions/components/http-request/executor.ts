@@ -60,64 +60,74 @@ export const httpRequestExecutor: NodeExecutor<HttpsRequestData> = async ({
     throw new NonRetriableError("HTTP Request node: Method not configured");
   }
 
-  const result = await step.run("http-request", async () => {
-    const endpoint = Handlebars.compile(data.endpoint)(context);
-    console.log("ENDPOINT", { endpoint });
+  try{
+    const result = await step.run("http-request", async () => {
+      const endpoint = Handlebars.compile(data.endpoint)(context);
+      console.log("ENDPOINT", { endpoint });
 
-    const method = typeof data.method === "string" ? data.method : "GET";
-    const options: KyOptions = { method };
+      const method = typeof data.method === "string" ? data.method : "GET";
+      const options: KyOptions = { method };
 
-    if (["POST", "PUT", "PATCH"].includes(method)) {
-      // body is optional; compile only if it exists
-      const resolved = data.body
-        ? Handlebars.compile(data.body)(context)
-        : undefined;
+      if (["POST", "PUT", "PATCH"].includes(method)) {
+        // body is optional; compile only if it exists
+        const resolved = data.body
+          ? Handlebars.compile(data.body)(context)
+          : undefined;
 
-      if (resolved != null) {
-        // validate JSON but throw a clean non-retriable error
-        try {
-          JSON.parse(resolved);
-        } catch {
-          throw new NonRetriableError(
-            "HTTP Request node: Body must be valid JSON"
-          );
+        if (resolved != null) {
+          // validate JSON but throw a clean non-retriable error
+          try {
+            JSON.parse(resolved);
+          } catch {
+            throw new NonRetriableError(
+              "HTTP Request node: Body must be valid JSON"
+            );
+          }
+
+          options.body = resolved;
+          options.headers = {
+            ...(options.headers ?? {}),
+            "content-type": "application/json",
+          };
         }
-
-        options.body = resolved;
-        options.headers = {
-          ...(options.headers ?? {}),
-          "content-type": "application/json",
-        };
       }
-    }
 
-    const response = await ky(endpoint, options);
+      const response = await ky(endpoint, options);
 
-    const contentType = response.headers.get("content-type");
-    const responseData = contentType?.includes("application/json")
-      ? await response.json()
-      : await response.text();
+      const contentType = response.headers.get("content-type");
+      const responseData = contentType?.includes("application/json")
+        ? await response.json()
+        : await response.text();
 
-    const responsePayload = {
-      httpResponse: {
-        status: response.status,
-        statusText: response.statusText,
-        data: responseData,
-      },
-    };
+      const responsePayload = {
+        httpResponse: {
+          status: response.status,
+          statusText: response.statusText,
+          data: responseData,
+        },
+      };
 
-    return {
-      ...context,
-      [data.variableName]: responsePayload,
-    };
-  });
+      return {
+        ...context,
+        [data.variableName]: responsePayload,
+      };
+    });
 
-  await publish(
-    httpRequestChannel().status({
-      nodeId,
-      status: "success",
-    })
-  )
+    await publish(
+      httpRequestChannel().status({
+        nodeId,
+        status: "success",
+      })
+    )
+    return result;
+  }catch (error) {
+    await publish(
+      httpRequestChannel().status({
+        nodeId,
+        status: "error",
+      })
+    )
+    throw error;
+  }
 
-  return result;
 };

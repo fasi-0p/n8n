@@ -11,6 +11,7 @@ import {HttpRequestFormValues} from "./dialog"
 import {useNodeStatus} from '../../hooks/use-node-status'
 import {httpRequestChannel} from "@/inngest/channels/http-request"
 import {fetchHttpRequestRealtimeToken} from "@/features/executions/components/http-request/actions"
+import {HTTP_REQUEST_CHANNEL_NAME} from "@/inngest/channels/http-request"
 
 type HttpRequestNodeData = {
   variableName?:string;
@@ -26,7 +27,7 @@ export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
   const {setNodes} = useReactFlow()
   const nodeStatus = useNodeStatus({
     nodeId: props.id,
-    channel: httpRequestChannel().name,
+    channel: HTTP_REQUEST_CHANNEL_NAME,
     topic: 'status',
     refreshToken: fetchHttpRequestRealtimeToken,
   });
