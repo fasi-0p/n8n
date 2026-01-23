@@ -8,6 +8,9 @@ import { useState } from "react";
 import { HttpRequestDialog } from "./dialog";
 import { useReactFlow } from "@xyflow/react";
 import {HttpRequestFormValues} from "./dialog"
+import {useNodeStatus} from '../../hooks/use-node-status'
+import {httpRequestChannel} from "@/inngest/channels/http-request"
+import {fetchHttpRequestRealtimeToken} from "@/features/executions/components/http-request/actions"
 
 type HttpRequestNodeData = {
   variableName?:string;
@@ -21,7 +24,12 @@ type HttpRequestNodeType = Node<HttpRequestNodeData>;
 export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const {setNodes} = useReactFlow()
-  const nodeStatus = 'initial'
+  const nodeStatus = useNodeStatus({
+    nodeId: props.id,
+    channel: httpRequestChannel().name,
+    topic: 'status',
+    refreshToken: fetchHttpRequestRealtimeToken,
+  });
 
   const handleOpenSettings=()=> setDialogOpen(true);
 
