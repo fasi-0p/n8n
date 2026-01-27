@@ -2,11 +2,12 @@ import { inngest } from "./client";
 import { NonRetriableError } from "inngest";
 import prisma from "@/lib/db";
 import { topologicalSort } from "./utils";
-import { getExecutor } from "@/features/executions/components/lib/executor-registry";
+import { getExecutor } from "@/features/executions/lib/executor-registry";
 import { NodeType } from "@/generated/prisma/client"; //or browser idk
 import { httpRequestChannel } from "./channels/http-request";
 import { manualTriggerChannel } from "./channels/manual-trigger";
 import { googleFormTriggerChannel } from "./channels/google-form-trigger";
+import {stripeTriggerChannel} from "./channels/stripe-trigger"
 
 export const executeWorkflow = inngest.createFunction(
   {
@@ -15,7 +16,7 @@ export const executeWorkflow = inngest.createFunction(
   },
   {
     event: "workflows/execute.workflow",
-    channels: [httpRequestChannel(), manualTriggerChannel(), googleFormTriggerChannel()]
+    channels: [httpRequestChannel(), manualTriggerChannel(), googleFormTriggerChannel(), stripeTriggerChannel()] //update here everytime you add a new inngest channel
   },
   async ({event, step, publish}) =>{
     const workflowId = event.data.workflowId
