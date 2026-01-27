@@ -2,7 +2,7 @@ import { inngest } from "./client";
 import { NonRetriableError } from "inngest";
 import prisma from "@/lib/db";
 import { topologicalSort } from "./utils";
-import { getExecutor } from "@/features/executions/components/lib/execution-registry";
+import { getExecutor } from "@/features/executions/components/lib/executor-registry";
 import { NodeType } from "@/generated/prisma/client"; //or browser idk
 import { httpRequestChannel } from "./channels/http-request";
 import { manualTriggerChannel } from "./channels/manual-trigger";
