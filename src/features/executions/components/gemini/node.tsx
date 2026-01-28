@@ -7,14 +7,11 @@ import { useState } from "react";
 import { GeminiDialog, GeminiFormValues } from "./dialog";
 import { useReactFlow } from "@xyflow/react";
 import {useNodeStatus} from '../../hooks/use-node-status'
-import {httpRequestChannel} from "@/inngest/channels/http-request"
-import {fetchHttpRequestRealtimeToken} from "@/features/executions/components/http-request/actions"
-import {HTTP_REQUEST_CHANNEL_NAME} from "@/inngest/channels/http-request"
-import {AVAILABLE_MODELS} from "@/features/executions/components/gemini/dialog"
+import {fetchGeminiRealtimeToken} from "@/features/executions/components/gemini/actions"
+import {GEMINI_CHANNEL_NAME} from "@/inngest/channels/gemini"
 
 type GeminiNodeData = {
   variableName?: string;
-  model?: "gemini-1.5-flash" | "gemini-1.5-flash-8b" | "gemini-1.5-pro" | "gemini-1.0-pro" | "gemini-pro" //to do, fix maybe?
   systemPrompt?: string;
   userPrompt?: string;
 };
@@ -26,9 +23,9 @@ export const GeminiNode = memo((props: NodeProps<GeminiNodeType>) => {
   const {setNodes} = useReactFlow()
   const nodeStatus = useNodeStatus({
     nodeId: props.id,
-    channel: HTTP_REQUEST_CHANNEL_NAME,
+    channel: GEMINI_CHANNEL_NAME,
     topic: 'status',
-    refreshToken: fetchHttpRequestRealtimeToken,
+    refreshToken: fetchGeminiRealtimeToken,
   });
 
   const handleOpenSettings=()=> setDialogOpen(true);
@@ -53,7 +50,7 @@ export const GeminiNode = memo((props: NodeProps<GeminiNodeType>) => {
 
   const nodeData = props.data;
   const description = nodeData?.userPrompt
-    ? `${nodeData.model || AVAILABLE_MODELS[0]}: ${nodeData.userPrompt.slice(0,50)}...`
+    ? `gemini-2.0-flash: ${nodeData.userPrompt.slice(0,50)}...`
     : "Not configured";
 
   return (
