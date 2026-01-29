@@ -6,6 +6,9 @@ import {prefetchCredentials} from "@/features/credentials/server/prefetch"
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { HydrateClient } from "@/trpc/server";
+import { CredentialsContainer, CredentialsList, CredentialsError, CredentialsLoading } from "@/features/credentials/components/credentials";
+
+
 type Props={
   searchParams: Promise<SearchParams>;
 }
@@ -17,13 +20,15 @@ const page = async ({searchParams}: Props) => {
   prefetchCredentials(params)
 
   return (
-    <HydrateClient>
-      <ErrorBoundary fallback={<p>Error</p>}>
-        <Suspense fallback={<p>Loading...</p>}>
-          <p>TODO: Credentials list</p>
-        </Suspense>
-      </ErrorBoundary>
-    </HydrateClient>
+    <CredentialsContainer>
+      <HydrateClient>
+        <ErrorBoundary fallback={<CredentialsError/>}>
+          <Suspense fallback={<CredentialsLoading/>}>
+            <CredentialsList/>
+          </Suspense>
+        </ErrorBoundary>
+      </HydrateClient>
+    </CredentialsContainer>
   )
 }
 
