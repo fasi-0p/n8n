@@ -4,7 +4,7 @@ import { z } from "zod";
 import { PAGINATION } from "@/config/constants";
 import { CredentialType } from "@/generated/prisma/client";
 
-//mapping each workflow name to userId
+//mapping each credential name to userId
 export const credentialsRouter = createTRPCRouter({  //CRUD
   create: protectedProcedure
   .input(
@@ -61,7 +61,7 @@ export const credentialsRouter = createTRPCRouter({  //CRUD
   updateName: protectedProcedure  //update
     .input(z.object({ id: z.string(), name: z.string().min(1) }))
     .mutation(({ ctx, input }) => {
-      return prisma.workflow.updateMany({
+      return prisma.credential.updateMany({
         where: {
           id: input.id,
           userId: ctx.auth.user.id,
