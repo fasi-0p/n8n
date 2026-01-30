@@ -8,7 +8,7 @@ import { GeminiExecutor } from "@/features/executions/components/gemini/executor
 import {OpenAiExecutor} from "@/features/executions/components/openai/executor";
 import {AnthropicExecutor} from "@/features/executions/components/anthropic/executor";
 import {discordExecutor} from "@/features/executions/components/discord/executor";
-
+import {slackExecutor} from "@/features/executions/components/slack/executor";
 
 export const executorRegistry: Record<NodeType, NodeExecutor> = {
   [NodeType.INITIAL]: manualTriggerExecutor,
@@ -20,7 +20,7 @@ export const executorRegistry: Record<NodeType, NodeExecutor> = {
   [NodeType.ANTHROPIC]: AnthropicExecutor,
   [NodeType.OPENAI]: OpenAiExecutor, 
   [NodeType.DISCORD]: discordExecutor,
-  [NodeType.SLACK]: discordExecutor, //todo manualtrigger-> slack trigger
+  [NodeType.SLACK]: slackExecutor,
 };
 
 export const getExecutor = (type: NodeType): NodeExecutor => {
