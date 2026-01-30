@@ -1,126 +1,104 @@
 import type { NodeExecutor } from "@/features/executions/types";
 import { NonRetriableError } from "inngest";
-import {createGoogleGenerativeAI} from '@ai-sdk/google'
-import {generateText} from "ai"
 import Handlebars from "handlebars";
-import { geminiChannel } from "@/inngest/channels/gemini";
-import prisma from "@/lib/db";
-
+import { discordChannel } from "@/inngest/channels/discord";
+import { decode } from "html-entities";
+import ky from "ky";
 
 Handlebars.registerHelper("json", (context) => {
   const jsonString = JSON.stringify(context);
   return new Handlebars.SafeString(jsonString);
 });
 
-type GeminiData = {
+type DiscordData = {
   variableName?: string;
-  credentialId?: string;
-  systemPrompt?: string;
-  userPrompt?: string;
+  webhookUrl?: string;
+  content?: string;
+  username?: string;
 };
 
-export const GeminiExecutor: NodeExecutor<GeminiData> = async ({
+export const discordExecutor: NodeExecutor<DiscordData> = async ({
   data,
   nodeId,
-  userId,
   context,
   step,
   publish,
 }) => {
   await publish(
-    geminiChannel().status({
+    discordChannel().status({
       nodeId,
       status: "loading",
     })
   );
 
-  if (!data.variableName){
+  if (!data.webhookUrl) {
     await publish(
-      geminiChannel().status({
-        nodeId, status: "error"
+      discordChannel().status({
+        nodeId,
+        status: "error",
       })
-    )
-    throw new NonRetriableError("Gemini node: Variable name is missing")
+    );
+    throw new NonRetriableError("Discord node: webhook url is required");
   }
 
-  if (!data.variableName){
+  if (!data.content) {
     await publish(
-      geminiChannel().status({
-        nodeId, status: "error"
+      discordChannel().status({
+        nodeId,
+        status: "error",
       })
-    )
-    throw new NonRetriableError("Gemini node: Credential is missing")
+    );
+    throw new NonRetriableError("Discord node: Message content is required");
   }
 
-  if(!data.userPrompt){
-    await publish(
-      geminiChannel().status({
-        nodeId, status: "error"
-      })
-    )
-    throw new NonRetriableError("Gemini node: User prompt is missing")
-  }
+  const rawContent = Handlebars.compile(data.content)(context);
+  const content = decode(rawContent);
+  const username = data.username
+    ? decode(Handlebars.compile(data.username)(context))
+    : undefined;
 
+  try {
+    const result = await step.run("discord-webhook", async () => {
+      await ky.post(data.webhookUrl!, {
+        json: {
+          content: content.slice(0, 2000), // max message length
+          username,
+        },
+      });
 
-  const systemPrompt = data.systemPrompt? Handlebars.compile(data.systemPrompt)(context) : "You are a helful assistant";
-
-  const userPrompt = Handlebars.compile(data.userPrompt)(context);
-
-  const credential = await step.run("get-credential", ()=>{
-    return prisma.credential.findUnique({
-      where:{id: data.credentialId, userId},
-      select:{value: true}
-    })
-  })
-
-  if (!credential){
-    await publish(
-      geminiChannel().status({
-        nodeId, status: "error"
-      })
-    )
-    throw new NonRetriableError("Gemini node: credential not found")
-  }
-
-  const google=createGoogleGenerativeAI({
-    apiKey: credential.value,
-  })
-
-  try{
-    const {steps} = await step.ai.wrap(
-      "gemini-generate-text",
-       generateText,
-        {
-          model: google("gemini-2.0-flash"),
-          system: systemPrompt,
-          prompt: userPrompt,
-          experimental_telemetry: {
-            isEnabled: true,
-            recordInputs: true,
-            recordOutputs: true,
-          }
-        })
-
-        const text = steps[0].content[0].type==='text'? steps[0].content[0].text : ""
-
+      if (!data.variableName) {
         await publish(
-          geminiChannel().status({
-            nodeId, status: "success"
+          discordChannel().status({
+            nodeId,
+            status: "error",
           })
-        )
+        );
+        throw new NonRetriableError("Discord node: Variable name is missing");
+      }
 
-        return {
-          ...context,
-          [data.variableName]: {
-            aiResponse: text
-          }
-        }
-  }catch (error) {
+      return {
+        ...context,
+        [data.variableName]: {
+          messageContent: content.slice(0, 2000),
+        },
+      };
+    });
+
     await publish(
-      geminiChannel().status({
-        nodeId, status: "error"
+      discordChannel().status({
+        nodeId,
+        status: "success",
       })
-    )
+    );
+
+    return result;
+  } catch (error) {
+    await publish(
+      discordChannel().status({
+        nodeId,
+        status: "error",
+      })
+    );
     throw error;
   }
 };

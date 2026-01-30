@@ -7,6 +7,7 @@ import { stripeTriggerExecutor } from "@/features/triggers/components/stripe-tri
 import { GeminiExecutor } from "@/features/executions/components/gemini/executor";
 import {OpenAiExecutor} from "@/features/executions/components/openai/executor";
 import {AnthropicExecutor} from "@/features/executions/components/anthropic/executor";
+import {discordExecutor} from "@/features/executions/components/discord/executor";
 
 
 export const executorRegistry: Record<NodeType, NodeExecutor> = {
@@ -16,9 +17,10 @@ export const executorRegistry: Record<NodeType, NodeExecutor> = {
   [NodeType.GOOGLE_FORM_TRIGGER]: googleFormTriggerExecutor,
   [NodeType.STRIPE_TRIGGER]: stripeTriggerExecutor,
   [NodeType.GEMINI]: GeminiExecutor,
-  [NodeType.ANTHROPIC]: AnthropicExecutor, //TODO geminiexecutor-> anthropicexecutor
-  [NodeType.OPENAI]: OpenAiExecutor, //TODO geminiexecutor-> anthropicexecutor
-
+  [NodeType.ANTHROPIC]: AnthropicExecutor,
+  [NodeType.OPENAI]: OpenAiExecutor, 
+  [NodeType.DISCORD]: discordExecutor,
+  [NodeType.SLACK]: discordExecutor, //todo manualtrigger-> slack trigger
 };
 
 export const getExecutor = (type: NodeType): NodeExecutor => {

@@ -43,7 +43,7 @@ export const GeminiExecutor: NodeExecutor<GeminiData> = async ({
     throw new NonRetriableError("Gemini node: Variable name is missing")
   }
 
-  if (!data.variableName){
+  if (!data.credentialId){
     await publish(
       geminiChannel().status({
         nodeId, status: "error"
