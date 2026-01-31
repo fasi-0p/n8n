@@ -13,23 +13,47 @@ import {openAiChannel} from "./channels/openai"
 import {anthropicChannel} from "./channels/anthropic"
 import {discordChannel} from "./channels/discord"
 import {slackChannel} from "./channels/slack"
-
+import {ExecutionStatus} from "@/generated/prisma/client"
 
 export const executeWorkflow = inngest.createFunction(
   {
     id: 'execute-workflow',
-    retries: 0. //TODO remove in production
+    retries: 0, //TODO remove in production
+    onFailure: async ({event, step}) =>{
+      return prisma.execution.update({
+        where: {inngestEventId: event.data.event.id},
+        data:{
+          status: ExecutionStatus.FAILED,
+          error: event.data.error.message,
+          errorStack: event.data.error.stack,
+        }
+      })
+    }
   },
   {
     event: "workflows/execute.workflow",
     channels: [httpRequestChannel(), manualTriggerChannel(), googleFormTriggerChannel(), stripeTriggerChannel(), geminiChannel(), openAiChannel(), anthropicChannel(), discordChannel(), slackChannel()]  //update here everytime you add a new inngest channel
   },
   async ({event, step, publish}) =>{
+    const inngestEventId = event.id;
     const workflowId = event.data.workflowId
+
+    if (!inngestEventId){
+      throw new NonRetriableError("Inngest event ID is missing")
+    }
 
     if(!workflowId){
       throw new NonRetriableError("Workflow ID is missing")
     }
+
+    await step.run("create-execution", async()=>{
+      await prisma.execution.create({
+        data: {
+          workflowId,
+          inngestEventId
+        }
+      })
+    })
 
     const sortedNodes = await step.run("prepare-workflow", async ()=> {
       const  workflow = await prisma.workflow.findUniqueOrThrow({
@@ -64,6 +88,18 @@ export const executeWorkflow = inngest.createFunction(
         publish
       })
     }
+
+    await step.run("update-execution", async()=>{
+      await prisma.execution.update({
+        where: {inngestEventId, workflowId},
+        data: {
+          status: ExecutionStatus.SUCCESS,
+          completedAt: new Date(),
+          output: context
+        }
+      })
+    })
+
 
     return {
       workflowId,

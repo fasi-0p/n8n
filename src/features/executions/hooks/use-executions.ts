@@ -1,6 +1,6 @@
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import {useExecutionsParams} from "./use-execution-params";
+import {useExecutionsParams} from "./use-executions-params";
 
 
 
