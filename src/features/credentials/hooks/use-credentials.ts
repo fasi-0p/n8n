@@ -2,7 +2,7 @@ import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery, useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {useCredentialsParams} from "./use-credentials-params";
-import { CredentialType } from "@/generated/prisma/client";
+import { CredentialType } from "@/generated/prisma";
 
 
 

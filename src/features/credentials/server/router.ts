@@ -2,7 +2,7 @@ import { createTRPCRouter, protectedProcedure, premiumProcedure } from "@/trpc/i
 import prisma from "@/lib/db";
 import { z } from "zod";
 import { PAGINATION } from "@/config/constants";
-import { CredentialType } from "@/generated/prisma/client";
+import { CredentialType } from "@/generated/prisma";
 import { encrypt } from "@/lib/encryption";
 
 //mapping each credential name to userId

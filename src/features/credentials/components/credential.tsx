@@ -1,6 +1,6 @@
 'use client'
 
-import {CredentialType} from "@/generated/prisma/browser"; //or client idk
+import {CredentialType} from "@/generated/prisma";
 import {useRouter} from "next/navigation";
 import {useCreateCredential, useUpdateCredential, useSuspenseCredential} from "../hooks/use-credentials";
 import {useUpgradeModal} from "@/hooks/use-upgrade-modal";

@@ -4,7 +4,7 @@ import prisma from "@/lib/db";
 import { z } from "zod";
 import { PAGINATION } from "@/config/constants";
 import type {Node, Edge} from "@xyflow/react"
-import { NodeType } from "@/generated/prisma/client";
+import { NodeType } from "@/generated/prisma";
 import { inngest } from "@/inngest/client";
 import { sendWorkflowExecution } from "@/inngest/utils";
 

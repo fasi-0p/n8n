@@ -5,9 +5,9 @@ import { useExecutionsParams } from "../hooks/use-executions-params";
 import { useEntitySearch } from "@/hooks/use-entity-search";
 import {LoadingView, ErrorView, EmptyView} from "@/components/entity-components"
 import { EntityHeader,  EntityContainer, EntitySearch, EntityPagination, EntityList, EntityItem } from "@/components/entity-components";
-import type { Execution } from "@/generated/prisma/browser"; //or client idk
+import type { Execution } from "@/generated/prisma"; //or client idk
 import {formatDistanceToNow} from 'date-fns'
-import { ExecutionStatus } from "@/generated/prisma/browser";
+import { ExecutionStatus } from "@/generated/prisma";
 import React from "react";
 import { CheckCircle2Icon, XCircleIcon, Loader2Icon, ClockIcon } from "lucide-react";
 import Image from "next/image";

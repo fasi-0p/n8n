@@ -3,7 +3,7 @@ import { NonRetriableError } from "inngest";
 import prisma from "@/lib/db";
 import { topologicalSort } from "./utils";
 import { getExecutor } from "@/features/executions/lib/executor-registry";
-import { NodeType } from "@/generated/prisma/client"; //or browser idk
+import { NodeType } from "@/generated/prisma"; //or browser idk
 import { httpRequestChannel } from "./channels/http-request";
 import { manualTriggerChannel } from "./channels/manual-trigger";
 import { googleFormTriggerChannel } from "./channels/google-form-trigger";
@@ -13,7 +13,7 @@ import {openAiChannel} from "./channels/openai"
 import {anthropicChannel} from "./channels/anthropic"
 import {discordChannel} from "./channels/discord"
 import {slackChannel} from "./channels/slack"
-import {ExecutionStatus} from "@/generated/prisma/client"
+import {ExecutionStatus} from "@/generated/prisma"
 
 export const executeWorkflow = inngest.createFunction(
   {

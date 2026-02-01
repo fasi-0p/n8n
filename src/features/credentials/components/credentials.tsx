@@ -5,9 +5,9 @@ import { useCredentialsParams } from "../hooks/use-credentials-params";
 import { useEntitySearch } from "@/hooks/use-entity-search";
 import {LoadingView, ErrorView, EmptyView} from "@/components/entity-components"
 import { EntityHeader,  EntityContainer, EntitySearch, EntityPagination, EntityList, EntityItem } from "@/components/entity-components";
-import type { Credential } from "@/generated/prisma/browser"; //or client idk
+import type { Credential } from "@/generated/prisma"; 
 import {formatDistanceToNow} from 'date-fns'
-import { CredentialType } from "@/generated/prisma/browser";
+import { CredentialType } from "@/generated/prisma";
 import React from "react";
 import Image from "next/image";
 

@@ -14,7 +14,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { NodeType } from "@/generated/prisma/browser";
+import { NodeType } from "@/generated/prisma";
 
 export type NodeTypeOption = {
   type: NodeType;

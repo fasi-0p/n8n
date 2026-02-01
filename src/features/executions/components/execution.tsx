@@ -1,7 +1,7 @@
 'use client';
 
 import { CheckCircle2Icon, XCircleIcon, Loader2Icon, ClockIcon } from "lucide-react";
-import { ExecutionStatus } from "@/generated/prisma/browser";
+import { ExecutionStatus } from "@/generated/prisma";
 import {formatDistanceToNow} from "date-fns"
 import Link from "next/link";
 import {useParams} from "next/navigation";
