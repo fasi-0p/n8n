@@ -183,9 +183,12 @@ export const CredentialForm = ({initialData}: CredentialFormProps) => {
         );
 }
 
-export const CredentialView =({credentialId}:{credentialId: string})=>{
-    
-    const {data: credential} = useSuspenseCredential(credentialId);
-    return <CredentialForm initialData={credential}/>
-    
+export const CredentialView = ({ credentialId }: { credentialId: string }) => {
+  const { data: credential } = useSuspenseCredential(credentialId)
+
+  if (!credential) {
+    return null // or throw / redirect / skeleton
+  }
+
+  return <CredentialForm initialData={credential} />
 }
