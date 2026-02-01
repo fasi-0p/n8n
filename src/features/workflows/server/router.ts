@@ -23,7 +23,7 @@ export const workflowsRouter = createTRPCRouter({  //CRUD
     return workflow
   }),
 
-  create: premiumProcedure.mutation(({ ctx }) => {  //create
+  create: premiumProcedure.mutation(({ ctx }) => {  //create  //TODO MAKE IT A PROTECTED FOR MORE USERS
     return prisma.workflow.create({
       data: {
         name: generateSlug(3),
