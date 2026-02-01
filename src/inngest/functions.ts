@@ -3,7 +3,7 @@ import { NonRetriableError } from "inngest";
 import prisma from "@/lib/db";
 import { topologicalSort } from "./utils";
 import { getExecutor } from "@/features/executions/lib/executor-registry";
-import { NodeType } from "@/generated/prisma"; //or browser idk
+import { NodeType } from "@/generated/prisma"; 
 import { httpRequestChannel } from "./channels/http-request";
 import { manualTriggerChannel } from "./channels/manual-trigger";
 import { googleFormTriggerChannel } from "./channels/google-form-trigger";

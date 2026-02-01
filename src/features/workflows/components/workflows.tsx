@@ -6,8 +6,7 @@ import { useWorkflowsParams } from "../hooks/use-workflows-params";
 import { useEntitySearch } from "@/hooks/use-entity-search";
 import {LoadingView, ErrorView, EmptyView} from "@/components/entity-components"
 import { EntityHeader,  EntityContainer, EntitySearch, EntityPagination, EntityList, EntityItem } from "@/components/entity-components";
-import type { WorkflowModel } from "@/generated/prisma/models/Workflow";
-type Workflow = WorkflowModel;
+import type { Workflow } from "@/generated/prisma";
 import {formatDistanceToNow} from 'date-fns'
 
 
