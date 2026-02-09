@@ -34,7 +34,7 @@ export const executeWorkflow = inngest.createFunction(
   },
   {
     event: "workflows/execute.workflow",
-    // channels: [httpRequestChannel(), manualTriggerChannel(), googleFormTriggerChannel(), stripeTriggerChannel(), geminiChannel(), openAiChannel(), anthropicChannel(), discordChannel(), slackChannel()]  //update here everytime you add a new inngest channel
+    channels: [httpRequestChannel(), manualTriggerChannel(), googleFormTriggerChannel(), stripeTriggerChannel(), geminiChannel(), openAiChannel(), anthropicChannel(), discordChannel(), slackChannel()]  //update here everytime you add a new inngest channel
   },
   async ({event, step, publish}) =>{
     const inngestEventId = event.id;
