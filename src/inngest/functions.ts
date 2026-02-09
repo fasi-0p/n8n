@@ -15,6 +15,8 @@ import {discordChannel} from "./channels/discord"
 import {slackChannel} from "./channels/slack"
 import {ExecutionStatus} from "@/generated/prisma"
 
+export const runtime = "nodejs";
+
 export const executeWorkflow = inngest.createFunction(
   {
     id: 'execute-workflow',
