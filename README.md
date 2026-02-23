@@ -202,7 +202,7 @@ npx inngest-cli@latest dev
 
 **Fasi Owaiz Ahmed**
 
-🚀 AI Engineer | AIML Student  
+🚀 Full Stack AIML Engineer    
 ⚡ Systems • AI • SaaS • Architecture  
 
 yes readme is made by chatgpt
