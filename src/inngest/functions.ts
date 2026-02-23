@@ -20,7 +20,7 @@ export const runtime = "nodejs";
 export const executeWorkflow = inngest.createFunction(
   {
     id: 'execute-workflow',
-    retries: process.env.NODE_ENV === 'production'? 3:0, //TODO remove in production
+    retries: process.env.NODE_ENV === 'production'? 3:0, 
     onFailure: async ({event, step}) =>{
       return prisma.execution.update({
         where: {inngestEventId: event.data.event.id},
