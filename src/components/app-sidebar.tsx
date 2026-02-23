@@ -54,7 +54,7 @@ export const AppSidebar = () => {
   const pathname = usePathname()
   const router = useRouter()
   const {hasActiveSubscription, isLoading}=useHasActiveSubscription();
-  console.log("SUB CHECK:", { hasActiveSubscription, isLoading }) //testing
+  // console.log("SUB CHECK:", { hasActiveSubscription, isLoading }) //testing
 
   return (
     <Sidebar collapsible="icon">

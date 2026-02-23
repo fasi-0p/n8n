@@ -65,7 +65,7 @@ export const httpRequestExecutor: NodeExecutor<HttpsRequestData> = async ({
       }
 
       const endpoint = Handlebars.compile(data.endpoint)(context);
-      console.log("ENDPOINT", { endpoint });
+      // console.log("ENDPOINT", { endpoint });
 
       const method = typeof data.method === "string" ? data.method : "GET";
       const options: KyOptions = { method };
