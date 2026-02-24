@@ -26,6 +26,7 @@ export const StripeTriggerNode = memo((props: NodeProps) => {
         name="Stipe"
         description="when stripe event happens"
         status={nodeStatus}
+        nodeType="STRIPE_TRIGGER"
         onSettings={handleOpenSettings}
         onDoubleClick={handleOpenSettings}
       />

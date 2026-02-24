@@ -1,88 +1,90 @@
-"use client";
+'use client';
 
-import React, { useCallback } from "react";
-import { createId } from "@paralleldrive/cuid2";
-import { useReactFlow } from "@xyflow/react";
-import { GlobeIcon, MousePointerIcon } from "lucide-react";
-import { toast } from "sonner";
-import { Separator } from "@/components/ui/separator";
+import React, { useCallback } from 'react';
+import { createId } from '@paralleldrive/cuid2';
+import { useReactFlow } from '@xyflow/react';
+import { GlobeIcon, MousePointerIcon } from 'lucide-react';
+import { toast } from 'sonner';
+import { Separator } from '@/components/ui/separator';
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { NodeType } from "@/generated/prisma";
+  Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger,
+} from '@/components/ui/sheet';
+import { NodeType } from '@/generated/prisma';
 
 export type NodeTypeOption = {
   type: NodeType;
   label: string;
   description: string;
   icon: React.ComponentType<{ className?: string }> | string;
+  accent: string; // neon accent colour for the dot
 };
 
 const triggerNodes: NodeTypeOption[] = [
   {
     type: NodeType.MANUAL_TRIGGER,
-    label: "Trigger manually",
-    description:
-      "Runs the flow on clicking a button. Good for getting started quickly",
+    label: 'Trigger manually',
+    description: 'Runs the flow on clicking a button',
     icon: MousePointerIcon,
+    accent: '#00f0ff',
   },
   {
     type: NodeType.GOOGLE_FORM_TRIGGER,
-    label: "Google Form",
-    description:
-      "Runs the flow when Google Form is submitted",
-    icon: "/logos/googleform.svg",
+    label: 'Google Form',
+    description: 'Runs the flow when Google Form is submitted',
+    icon: '/logos/googleform.svg',
+    accent: '#4285f4',
   },
   {
     type: NodeType.STRIPE_TRIGGER,
-    label: "Stripe Event",
-    description:
-      "Runs the flow when Stripe event happens",
-    icon: "/logos/stripe.svg",
+    label: 'Stripe Event',
+    description: 'Runs the flow when a Stripe event happens',
+    icon: '/logos/stripe.svg',
+    accent: '#6772e5',
   },
 ];
 
 const executionNodes: NodeTypeOption[] = [
   {
     type: NodeType.HTTP_REQUEST,
-    label: "HTTP Request",
-    description: "Makes an HTTP request",
+    label: 'HTTP Request',
+    description: 'Makes an HTTP request to any endpoint',
     icon: GlobeIcon,
+    accent: '#f97316',
   },
   {
     type: NodeType.GEMINI,
-    label: "Gemini",
-    description: "Uses Google Gemini to generate text",
-    icon: "/logos/gemini.svg",
+    label: 'Gemini',
+    description: 'Uses Google Gemini to generate text',
+    icon: '/logos/gemini.svg',
+    accent: '#bf00ff',
   },
   {
     type: NodeType.OPENAI,
-    label: "OpenAI",
-    description: "Uses OpenAI to generate text",
-    icon: "/logos/openai.svg",
+    label: 'OpenAI',
+    description: 'Uses OpenAI to generate text',
+    icon: '/logos/openai.svg',
+    accent: '#bf00ff',
   },
   {
     type: NodeType.ANTHROPIC,
-    label: "Anthropic",
-    description: "Uses Anthropic to generate text",
-    icon: "/logos/anthropic.svg",
+    label: 'Anthropic',
+    description: 'Uses Anthropic Claude to generate text',
+    icon: '/logos/anthropic.svg',
+    accent: '#bf00ff',
   },
   {
     type: NodeType.DISCORD,
-    label: "Discord",
-    description: "Send a message to Discord",
-    icon: "/logos/discord.svg",
+    label: 'Discord',
+    description: 'Send a message to Discord via webhook',
+    icon: '/logos/discord.svg',
+    accent: '#5865f2',
   },
   {
     type: NodeType.SLACK,
-    label: "Slack",
-    description: "Send a message to Slack",
-    icon: "/logos/slack.svg",
+    label: 'Slack',
+    description: 'Send a message to Slack via webhook',
+    icon: '/logos/slack.svg',
+    accent: '#9c5de0',
   },
 ];
 
@@ -92,145 +94,335 @@ interface NodeSelectorProps {
   children: React.ReactNode;
 }
 
-export function NodeSelector({
-  open,
-  onOpenChange,
-  children,
-}: NodeSelectorProps) {
+export function NodeSelector({ open, onOpenChange, children }: NodeSelectorProps) {
   const { setNodes, getNodes, screenToFlowPosition } = useReactFlow();
 
   const handleNodeSelect = useCallback(
     (selection: NodeTypeOption) => {
-      // ✅ Only allow one MANUAL_TRIGGER
       if (selection.type === NodeType.MANUAL_TRIGGER) {
-        const nodes = getNodes();
-        const hasManualTrigger = nodes.some(
-          (node) => node.type === NodeType.MANUAL_TRIGGER
-        );
-
-        if (hasManualTrigger) {
-          toast.error("Only one manual trigger is allowed per workflow");
-          return;
-        }
+        const has = getNodes().some(n => n.type === NodeType.MANUAL_TRIGGER);
+        if (has) { toast.error('Only one manual trigger is allowed per workflow'); return; }
       }
 
-      // ✅ place node near the center of screen
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
-
       const flowPosition = screenToFlowPosition({
-        x: centerX + (Math.random() - 0.5) * 200,
-        y: centerY + (Math.random() - 0.5) * 200,
+        x: window.innerWidth / 2 + (Math.random() - 0.5) * 200,
+        y: window.innerHeight / 2 + (Math.random() - 0.5) * 200,
       });
 
-      const newNode = {
-        id: createId(),
-        type: selection.type,
-        position: flowPosition,
-        data: {},
-      };
+      const newNode = { id: createId(), type: selection.type, position: flowPosition, data: {} };
 
-      setNodes((nodes) => {
-        // ✅ Remove INITIAL node if exists, but keep everything else
-        const withoutInitial = nodes.filter((n) => n.type !== NodeType.INITIAL);
-
-        // If INITIAL existed before, just replace it by adding this node
-        if (withoutInitial.length !== nodes.length) {
-          return [...withoutInitial, newNode];
-        }
-
-        // Otherwise just append
-        return [...nodes, newNode];
+      setNodes(nodes => {
+        const withoutInitial = nodes.filter(n => n.type !== NodeType.INITIAL);
+        return withoutInitial.length !== nodes.length
+          ? [...withoutInitial, newNode]
+          : [...nodes, newNode];
       });
 
       toast.success(`${selection.label} added`);
       onOpenChange(false);
     },
-    [getNodes, onOpenChange, screenToFlowPosition, setNodes]
+    [getNodes, onOpenChange, screenToFlowPosition, setNodes],
   );
+
+  function NodeRow({ node }: { node: NodeTypeOption }) {
+    const Icon = node.icon;
+    return (
+      <div
+        className="flex items-center gap-4 px-4 py-4 cursor-pointer border-l-2 border-transparent
+                   hover:border-l-[var(--neon-cyan)] hover:bg-zinc-800/50 transition-all duration-150"
+        onClick={() => handleNodeSelect(node)}
+      >
+        {/* Neon accent dot */}
+        <div
+          className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+          style={{ background: node.accent, boxShadow: `0 0 6px ${node.accent}` }}
+        />
+
+        {typeof Icon === 'string' ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={Icon} alt={node.label} className="w-5 h-5 flex-shrink-0" />
+        ) : (
+          <Icon className="size-5 text-zinc-400 flex-shrink-0" />
+        )}
+
+        <div className="overflow-hidden">
+          <div className="text-[13px] font-medium text-white">{node.label}</div>
+          <div className="text-[11px] text-zinc-500 truncate">{node.description}</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetTrigger asChild>{children}</SheetTrigger>
 
-      <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
-        <SheetHeader>
-          <SheetTitle>What triggers this workflow?</SheetTitle>
-          <SheetDescription>
-            A trigger is a step that starts your workflow.
+      <SheetContent
+        side="right"
+        className="w-full sm:max-w-md overflow-y-auto bg-zinc-950 border-l border-zinc-800 text-white"
+      >
+        <SheetHeader className="px-4 pt-4 pb-2">
+          <SheetTitle className="text-white font-mono-jetbrains text-base">Add Node</SheetTitle>
+          <SheetDescription className="text-zinc-500 text-sm">
+            Choose a trigger or action to add to your workflow.
           </SheetDescription>
         </SheetHeader>
 
-        {/* TRIGGERS */}
-        <div className="mt-6">
-          {triggerNodes.map((nodeType) => {
-            const Icon = nodeType.icon;
-
-            return (
-              <div
-                key={nodeType.type}
-                className="w-full justify-start h-auto py-5 px-4 rounded-none cursor-pointer border-l-2 border-transparent hover:border-l-primary"
-                onClick={() => handleNodeSelect(nodeType)}
-              >
-                <div className="flex items-center gap-6 w-full overflow-hidden">
-                  {typeof Icon === "string" ? (
-                    <img
-                      src={Icon}
-                      alt={nodeType.label}
-                      className="size-5 object-contain rounded-sm"
-                    />
-                  ) : (
-                    <Icon className="size-5" />
-                  )}
-
-                  <div className="flex flex-col items-start text-left">
-                    <span className="font-medium text-sm">{nodeType.label}</span>
-                    <span className="text-muted-foreground text-xs">
-                      {nodeType.description}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+        {/* Triggers */}
+        <div className="mt-4">
+          <div className="px-4 pb-2 text-[10px] font-semibold uppercase tracking-widest text-zinc-600 font-mono-jetbrains">
+            Triggers
+          </div>
+          {triggerNodes.map(n => <NodeRow key={n.type} node={n} />)}
         </div>
 
-        <Separator />
+        <Separator className="my-3 bg-zinc-800" />
 
-        {/* EXECUTION NODES */}
-        <div className="mt-6">
-          {executionNodes.map((nodeType) => {
-            const Icon = nodeType.icon;
-
-            return (
-              <div
-                key={nodeType.type}
-                className="w-full justify-start h-auto py-5 px-4 rounded-none cursor-pointer border-l-2 border-transparent hover:border-l-primary"
-                onClick={() => handleNodeSelect(nodeType)}
-              >
-                <div className="flex items-center gap-6 w-full overflow-hidden">
-                  {typeof Icon === "string" ? (
-                    <img
-                      src={Icon}
-                      alt={nodeType.label}
-                      className="size-5 object-contain rounded-sm"
-                    />
-                  ) : (
-                    <Icon className="size-5" />
-                  )}
-
-                  <div className="flex flex-col items-start text-left">
-                    <span className="font-medium text-sm">{nodeType.label}</span>
-                    <span className="text-muted-foreground text-xs">
-                      {nodeType.description}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+        {/* Actions */}
+        <div>
+          <div className="px-4 pb-2 text-[10px] font-semibold uppercase tracking-widest text-zinc-600 font-mono-jetbrains">
+            Actions
+          </div>
+          {executionNodes.map(n => <NodeRow key={n.type} node={n} />)}
         </div>
       </SheetContent>
     </Sheet>
   );
 }
+
+// "use client";
+
+// import React, { useCallback } from "react";
+// import { createId } from "@paralleldrive/cuid2";
+// import { useReactFlow } from "@xyflow/react";
+// import { GlobeIcon, MousePointerIcon } from "lucide-react";
+// import { toast } from "sonner";
+// import { Separator } from "@/components/ui/separator";
+// import {
+//   Sheet,
+//   SheetContent,
+//   SheetDescription,
+//   SheetHeader,
+//   SheetTitle,
+//   SheetTrigger,
+// } from "@/components/ui/sheet";
+// import { NodeType } from "@/generated/prisma";
+
+// export type NodeTypeOption = {
+//   type: NodeType;
+//   label: string;
+//   description: string;
+//   icon: React.ComponentType<{ className?: string }> | string;
+// };
+
+// const triggerNodes: NodeTypeOption[] = [
+//   {
+//     type: NodeType.MANUAL_TRIGGER,
+//     label: "Trigger manually",
+//     description:
+//       "Runs the flow on clicking a button. Good for getting started quickly",
+//     icon: MousePointerIcon,
+//   },
+//   {
+//     type: NodeType.GOOGLE_FORM_TRIGGER,
+//     label: "Google Form",
+//     description:
+//       "Runs the flow when Google Form is submitted",
+//     icon: "/logos/googleform.svg",
+//   },
+//   {
+//     type: NodeType.STRIPE_TRIGGER,
+//     label: "Stripe Event",
+//     description:
+//       "Runs the flow when Stripe event happens",
+//     icon: "/logos/stripe.svg",
+//   },
+// ];
+
+// const executionNodes: NodeTypeOption[] = [
+//   {
+//     type: NodeType.HTTP_REQUEST,
+//     label: "HTTP Request",
+//     description: "Makes an HTTP request",
+//     icon: GlobeIcon,
+//   },
+//   {
+//     type: NodeType.GEMINI,
+//     label: "Gemini",
+//     description: "Uses Google Gemini to generate text",
+//     icon: "/logos/gemini.svg",
+//   },
+//   {
+//     type: NodeType.OPENAI,
+//     label: "OpenAI",
+//     description: "Uses OpenAI to generate text",
+//     icon: "/logos/openai.svg",
+//   },
+//   {
+//     type: NodeType.ANTHROPIC,
+//     label: "Anthropic",
+//     description: "Uses Anthropic to generate text",
+//     icon: "/logos/anthropic.svg",
+//   },
+//   {
+//     type: NodeType.DISCORD,
+//     label: "Discord",
+//     description: "Send a message to Discord",
+//     icon: "/logos/discord.svg",
+//   },
+//   {
+//     type: NodeType.SLACK,
+//     label: "Slack",
+//     description: "Send a message to Slack",
+//     icon: "/logos/slack.svg",
+//   },
+// ];
+
+// interface NodeSelectorProps {
+//   open: boolean;
+//   onOpenChange: (open: boolean) => void;
+//   children: React.ReactNode;
+// }
+
+// export function NodeSelector({
+//   open,
+//   onOpenChange,
+//   children,
+// }: NodeSelectorProps) {
+//   const { setNodes, getNodes, screenToFlowPosition } = useReactFlow();
+
+//   const handleNodeSelect = useCallback(
+//     (selection: NodeTypeOption) => {
+//       // ✅ Only allow one MANUAL_TRIGGER
+//       if (selection.type === NodeType.MANUAL_TRIGGER) {
+//         const nodes = getNodes();
+//         const hasManualTrigger = nodes.some(
+//           (node) => node.type === NodeType.MANUAL_TRIGGER
+//         );
+
+//         if (hasManualTrigger) {
+//           toast.error("Only one manual trigger is allowed per workflow");
+//           return;
+//         }
+//       }
+
+//       // ✅ place node near the center of screen
+//       const centerX = window.innerWidth / 2;
+//       const centerY = window.innerHeight / 2;
+
+//       const flowPosition = screenToFlowPosition({
+//         x: centerX + (Math.random() - 0.5) * 200,
+//         y: centerY + (Math.random() - 0.5) * 200,
+//       });
+
+//       const newNode = {
+//         id: createId(),
+//         type: selection.type,
+//         position: flowPosition,
+//         data: {},
+//       };
+
+//       setNodes((nodes) => {
+//         // ✅ Remove INITIAL node if exists, but keep everything else
+//         const withoutInitial = nodes.filter((n) => n.type !== NodeType.INITIAL);
+
+//         // If INITIAL existed before, just replace it by adding this node
+//         if (withoutInitial.length !== nodes.length) {
+//           return [...withoutInitial, newNode];
+//         }
+
+//         // Otherwise just append
+//         return [...nodes, newNode];
+//       });
+
+//       toast.success(`${selection.label} added`);
+//       onOpenChange(false);
+//     },
+//     [getNodes, onOpenChange, screenToFlowPosition, setNodes]
+//   );
+
+//   return (
+//     <Sheet open={open} onOpenChange={onOpenChange}>
+//       <SheetTrigger asChild>{children}</SheetTrigger>
+
+//       <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
+//         <SheetHeader>
+//           <SheetTitle>What triggers this workflow?</SheetTitle>
+//           <SheetDescription>
+//             A trigger is a step that starts your workflow.
+//           </SheetDescription>
+//         </SheetHeader>
+
+//         {/* TRIGGERS */}
+//         <div className="mt-6">
+//           {triggerNodes.map((nodeType) => {
+//             const Icon = nodeType.icon;
+
+//             return (
+//               <div
+//                 key={nodeType.type}
+//                 className="w-full justify-start h-auto py-5 px-4 rounded-none cursor-pointer border-l-2 border-transparent hover:border-l-primary"
+//                 onClick={() => handleNodeSelect(nodeType)}
+//               >
+//                 <div className="flex items-center gap-6 w-full overflow-hidden">
+//                   {typeof Icon === "string" ? (
+//                     <img
+//                       src={Icon}
+//                       alt={nodeType.label}
+//                       className="size-5 object-contain rounded-sm"
+//                     />
+//                   ) : (
+//                     <Icon className="size-5" />
+//                   )}
+
+//                   <div className="flex flex-col items-start text-left">
+//                     <span className="font-medium text-sm">{nodeType.label}</span>
+//                     <span className="text-muted-foreground text-xs">
+//                       {nodeType.description}
+//                     </span>
+//                   </div>
+//                 </div>
+//               </div>
+//             );
+//           })}
+//         </div>
+
+//         <Separator />
+
+//         {/* EXECUTION NODES */}
+//         <div className="mt-6">
+//           {executionNodes.map((nodeType) => {
+//             const Icon = nodeType.icon;
+
+//             return (
+//               <div
+//                 key={nodeType.type}
+//                 className="w-full justify-start h-auto py-5 px-4 rounded-none cursor-pointer border-l-2 border-transparent hover:border-l-primary"
+//                 onClick={() => handleNodeSelect(nodeType)}
+//               >
+//                 <div className="flex items-center gap-6 w-full overflow-hidden">
+//                   {typeof Icon === "string" ? (
+//                     <img
+//                       src={Icon}
+//                       alt={nodeType.label}
+//                       className="size-5 object-contain rounded-sm"
+//                     />
+//                   ) : (
+//                     <Icon className="size-5" />
+//                   )}
+
+//                   <div className="flex flex-col items-start text-left">
+//                     <span className="font-medium text-sm">{nodeType.label}</span>
+//                     <span className="text-muted-foreground text-xs">
+//                       {nodeType.description}
+//                     </span>
+//                   </div>
+//                 </div>
+//               </div>
+//             );
+//           })}
+//         </div>
+//       </SheetContent>
+//     </Sheet>
+//   );
+// }

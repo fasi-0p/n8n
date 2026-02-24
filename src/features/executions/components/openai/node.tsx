@@ -63,6 +63,7 @@ export const OpenAiNode = memo((props: NodeProps<OpenAiNodeType>) => {
         icon="/logos/openai.svg"
         name="OpenAI"
         status={nodeStatus}
+        nodeType="OPENAI"
         description={description}
         onSettings={handleOpenSettings}
         onDoubleClick={handleOpenSettings}

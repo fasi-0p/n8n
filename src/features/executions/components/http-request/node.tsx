@@ -66,6 +66,7 @@ export const HttpRequestNode = memo((props: NodeProps<HttpRequestNodeType>) => {
         icon={GlobeIcon}
         name="HTTP Request"
         status={nodeStatus}
+        nodeType="HTTP_REQUEST"
         description={description}
         onSettings={handleOpenSettings}
         onDoubleClick={handleOpenSettings}

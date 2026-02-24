@@ -62,6 +62,7 @@ export const DiscordNode = memo((props: NodeProps<GeminiNodeType>) => {
         icon="/logos/discord.svg"
         name="Discord"
         status={nodeStatus}
+        nodeType="DISCORD"
         description={description}
         onSettings={handleOpenSettings}
         onDoubleClick={handleOpenSettings}

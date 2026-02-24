@@ -26,6 +26,7 @@ export const GoogleFormTrigger = memo((props: NodeProps) => {
         name="Google Form"
         description="Runs the flow when Google Form is submitted"
         status={nodeStatus}
+        nodeType="GOOGLE_FORM_TRIGGER"
         onSettings={handleOpenSettings}
         onDoubleClick={handleOpenSettings}
       />

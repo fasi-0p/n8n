@@ -65,6 +65,7 @@ export const AnthropicNode = memo((props: NodeProps<AnthropicNodeType>) => {
         name="Anthropic"
         status={nodeStatus}
         description={description}
+        nodeType="ANTHROPIC"
         onSettings={handleOpenSettings}
         onDoubleClick={handleOpenSettings}
       />

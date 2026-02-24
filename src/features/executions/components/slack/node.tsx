@@ -61,6 +61,7 @@ export const SlackNode = memo((props: NodeProps<GeminiNodeType>) => {
         icon="/logos/slack.svg"
         name="slack"
         status={nodeStatus}
+        nodeType="SLACK"
         description={description}
         onSettings={handleOpenSettings}
         onDoubleClick={handleOpenSettings}
