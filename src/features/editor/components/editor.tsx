@@ -153,9 +153,9 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
         {/* Dot-grid background — matches NeonGrid blueprint spec */}
         <Background
           variant={BackgroundVariant.Dots}
-          gap={28}
-          size={1}
-          color="#27272a"
+          gap={22}
+          size={1.6}
+          color="#dc7718"
           style={{ backgroundColor: '#09090b' }}
         />
 
