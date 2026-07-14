@@ -36,9 +36,9 @@ const NeonButton = ({
 }) => {
   const cls =
     "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium " +
-    "bg-[rgba(0,240,255,0.1)] text-[#00f0ff] border border-[rgba(0,240,255,0.4)] " +
-    "shadow-[0_0_12px_rgba(0,240,255,0.15)] " +
-    "hover:bg-[rgba(0,240,255,0.2)] hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] " +
+    "bg-[rgba(56,189,248,0.1)] text-[#38bdf8] border border-[rgba(56,189,248,0.4)] " +
+    "shadow-[0_0_12px_rgba(56,189,248,0.15)] " +
+    "hover:bg-[rgba(56,189,248,0.2)] hover:shadow-[0_0_20px_rgba(56,189,248,0.3)] " +
     "disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200";
 
   if (href) {
@@ -136,10 +136,10 @@ export const EntitySearch = ({
     <div className="relative ml-auto">
       <SearchIcon className="size-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
       <input
-        className="w-[200px] bg-black border border-zinc-800 rounded-lg pl-8 pr-3 py-2
+        className="w-[200px] bg-[#0f172a] border border-zinc-800 rounded-lg pl-8 pr-3 py-2
                    text-sm text-white placeholder:text-zinc-600 outline-none
-                   focus:border-[#00f0ff] focus:ring-1 focus:ring-[rgba(0,240,255,0.3)]
-                   focus:shadow-[0_0_12px_rgba(0,240,255,0.1)] transition-all"
+                   focus:border-[#38bdf8] focus:ring-1 focus:ring-[rgba(56,189,248,0.3)]
+                   focus:shadow-[0_0_12px_rgba(56,189,248,0.1)] transition-all"
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -219,7 +219,7 @@ interface LoadingViewProps extends StateViewProps {
 export const LoadingView = ({ entity = "items", message }: LoadingViewProps) => {
   return (
     <div className="flex justify-center items-center h-full flex-1 flex-col gap-y-4">
-      <Loader2Icon className="size-6 animate-spin text-[#00f0ff]" />
+      <Loader2Icon className="size-6 animate-spin text-[#38bdf8]" />
       {!!message && <p className="text-sm text-zinc-500">{message}</p>}
     </div>
   );
@@ -497,7 +497,7 @@ export const EntityItem = ({
 //     <div className="relative ml-auto">
 //       <SearchIcon className="size-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
 //       <Input
-//         className="max-w-[200px] bg-background shadow-none border-border pl-8"
+//         className="max-w-[200px] bg-[#0f172a] shadow-none border-border pl-8"
 //         placeholder={placeholder}
 //         value={value}
 //         onChange={(e) => onChange(e.target.value)}

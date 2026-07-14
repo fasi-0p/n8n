@@ -52,9 +52,9 @@ export const EditorSaveButton = ({ workflowId }: { workflowId: string }) => {
       onClick={handleSave}
       disabled={saveWorkflow.isPending}
       className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium
-                 bg-[rgba(0,240,255,0.1)] text-[#00f0ff] border border-[rgba(0,240,255,0.4)]
-                 shadow-[0_0_12px_rgba(0,240,255,0.15)]
-                 hover:bg-[rgba(0,240,255,0.2)] hover:shadow-[0_0_20px_rgba(0,240,255,0.3)]
+                 bg-[rgba(56,189,248,0.1)] text-[#38bdf8] border border-[rgba(56,189,248,0.4)]
+                 shadow-[0_0_12px_rgba(56,189,248,0.15)]
+                 hover:bg-[rgba(56,189,248,0.2)] hover:shadow-[0_0_20px_rgba(56,189,248,0.3)]
                  disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
     >
       <SaveIcon className="size-4" />
@@ -128,9 +128,9 @@ export const EditorNameInput = ({ workflowId }: { workflowId: string }) => {
         onChange={(e) => setName(e.target.value)}
         onBlur={handleSave}
         onKeyDown={handleKeyDown}
-        className="h-7 px-2 bg-black border border-[rgba(0,240,255,0.4)] rounded-md
-                   text-[#00f0ff] text-sm outline-none font-mono
-                   focus:ring-1 focus:ring-[rgba(0,240,255,0.3)]"
+        className="h-7 px-2 bg-[#0f172a] border border-[rgba(56,189,248,0.4)] rounded-md
+                   text-[#38bdf8] text-sm outline-none font-mono
+                   focus:ring-1 focus:ring-[rgba(56,189,248,0.3)]"
         style={{ fontFamily: "'JetBrains Mono', monospace", minWidth: "120px" }}
       />
     );
@@ -139,7 +139,7 @@ export const EditorNameInput = ({ workflowId }: { workflowId: string }) => {
   return (
     <BreadcrumbItem
       onClick={() => setIsEditing(true)}
-      className="cursor-pointer text-white hover:text-[#00f0ff] transition-colors"
+      className="cursor-pointer text-white hover:text-[#38bdf8] transition-colors"
     >
       {workflow.name}
     </BreadcrumbItem>
@@ -161,9 +161,9 @@ export const EditorHeader = ({ workflowId }: { workflowId: string }) => {
     <header
       className="flex h-14 shrink-0 items-center gap-3 px-4 border-b"
       style={{
-        background: "rgba(0,0,0,0.5)",
+        background: "rgba(15,23,42,0.7)",
         backdropFilter: "blur(12px)",
-        borderBottom: "1px solid #27272a",
+        borderBottom: "1px solid #334155",
       }}
     >
       <SidebarTrigger className="text-zinc-400 hover:text-white hover:bg-white/5 transition-colors" />

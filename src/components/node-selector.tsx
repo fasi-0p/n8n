@@ -25,7 +25,7 @@ const triggerNodes: NodeTypeOption[] = [
     label: 'Trigger manually',
     description: 'Runs the flow on clicking a button',
     icon: MousePointerIcon,
-    accent: '#00f0ff',
+    accent: '#38bdf8',
   },
   {
     type: NodeType.GOOGLE_FORM_TRIGGER,
@@ -56,21 +56,21 @@ const executionNodes: NodeTypeOption[] = [
     label: 'Gemini',
     description: 'Uses Google Gemini to generate text',
     icon: '/logos/gemini.svg',
-    accent: '#bf00ff',
+    accent: '#8b5cf6',
   },
   {
     type: NodeType.OPENAI,
     label: 'OpenAI',
     description: 'Uses OpenAI to generate text',
     icon: '/logos/openai.svg',
-    accent: '#bf00ff',
+    accent: '#8b5cf6',
   },
   {
     type: NodeType.ANTHROPIC,
     label: 'Anthropic',
     description: 'Uses Anthropic Claude to generate text',
     icon: '/logos/anthropic.svg',
-    accent: '#bf00ff',
+    accent: '#8b5cf6',
   },
   {
     type: NodeType.DISCORD,
@@ -129,7 +129,7 @@ export function NodeSelector({ open, onOpenChange, children }: NodeSelectorProps
     return (
       <div
         className="flex items-center gap-4 px-4 py-4 cursor-pointer border-l-2 border-transparent
-                   hover:border-l-[var(--neon-cyan)] hover:bg-zinc-800/50 transition-all duration-150"
+                   hover:border-l-[var(--neon-cyan)] hover:bg-[#1e293b] transition-all duration-150"
         onClick={() => handleNodeSelect(node)}
       >
         {/* Neon accent dot */}
@@ -142,12 +142,12 @@ export function NodeSelector({ open, onOpenChange, children }: NodeSelectorProps
           // eslint-disable-next-line @next/next/no-img-element
           <img src={Icon} alt={node.label} className="w-5 h-5 flex-shrink-0" />
         ) : (
-          <Icon className="size-5 text-zinc-400 flex-shrink-0" />
+          <Icon className="size-5 text-slate-400 flex-shrink-0" />
         )}
 
         <div className="overflow-hidden">
           <div className="text-[13px] font-medium text-white">{node.label}</div>
-          <div className="text-[11px] text-zinc-500 truncate">{node.description}</div>
+          <div className="text-[11px] text-slate-400 truncate">{node.description}</div>
         </div>
       </div>
     );
@@ -159,28 +159,28 @@ export function NodeSelector({ open, onOpenChange, children }: NodeSelectorProps
 
       <SheetContent
         side="right"
-        className="w-full sm:max-w-md overflow-y-auto bg-zinc-950 border-l border-zinc-800 text-white"
+        className="w-full sm:max-w-md overflow-y-auto bg-[#0f172a] border-l border-[#334155] text-white"
       >
         <SheetHeader className="px-4 pt-4 pb-2">
           <SheetTitle className="text-white font-mono-jetbrains text-base">Add Node</SheetTitle>
-          <SheetDescription className="text-zinc-500 text-sm">
+          <SheetDescription className="text-slate-400 text-sm">
             Choose a trigger or action to add to your workflow.
           </SheetDescription>
         </SheetHeader>
 
         {/* Triggers */}
         <div className="mt-4">
-          <div className="px-4 pb-2 text-[10px] font-semibold uppercase tracking-widest text-zinc-600 font-mono-jetbrains">
+          <div className="px-4 pb-2 text-[10px] font-semibold uppercase tracking-widest text-slate-500 font-mono-jetbrains">
             Triggers
           </div>
           {triggerNodes.map(n => <NodeRow key={n.type} node={n} />)}
         </div>
 
-        <Separator className="my-3 bg-zinc-800" />
+        <Separator className="my-3 bg-[#1e293b]" />
 
         {/* Actions */}
         <div>
-          <div className="px-4 pb-2 text-[10px] font-semibold uppercase tracking-widest text-zinc-600 font-mono-jetbrains">
+          <div className="px-4 pb-2 text-[10px] font-semibold uppercase tracking-widest text-slate-500 font-mono-jetbrains">
             Actions
           </div>
           {executionNodes.map(n => <NodeRow key={n.type} node={n} />)}

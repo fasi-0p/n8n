@@ -155,25 +155,25 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
           variant={BackgroundVariant.Dots}
           gap={22}
           size={1.6}
-          color="#dc7718"
-          style={{ backgroundColor: '#09090b' }}
+          color="#334155"
+          style={{ backgroundColor: '#0f172a' }}
         />
 
         {/* Controls — styled via globals.css overrides below */}
         <Controls
-          className="!bg-zinc-900 !border-zinc-800 !shadow-none [&>button]:!bg-zinc-900 [&>button]:!border-zinc-800 [&>button]:!text-zinc-400 [&>button:hover]:!bg-zinc-800 [&>button:hover]:!text-white"
+          className="!bg-[#1e293b] !border-[#334155] !shadow-none [&>button]:!bg-[#1e293b] [&>button]:!border-[#334155] [&>button]:!text-slate-400 [&>button:hover]:!bg-[#334155] [&>button:hover]:!text-white"
         />
 
         {/* MiniMap — NeonGrid dark theme */}
         <MiniMap
-          className="!bg-black/60 !border !border-zinc-800 !rounded-lg"
+          className="!bg-[#0f172a]/60 !border !border-[#334155] !rounded-lg"
           nodeColor={(node) => {
             const aiTypes = ['ANTHROPIC', 'GEMINI', 'OPENAI'];
-            if (aiTypes.includes(node.type ?? '')) return '#bf00ff';
-            if (['MANUAL_TRIGGER', 'GOOGLE_FORM_TRIGGER', 'STRIPE_TRIGGER'].includes(node.type ?? '')) return '#00f0ff';
-            return '#3f3f46';
+            if (aiTypes.includes(node.type ?? '')) return '#8b5cf6';
+            if (['MANUAL_TRIGGER', 'GOOGLE_FORM_TRIGGER', 'STRIPE_TRIGGER'].includes(node.type ?? '')) return '#38bdf8';
+            return '#475569';
           }}
-          maskColor="rgba(0,0,0,0.5)"
+          maskColor="rgba(15,23,42,0.6)"
         />
 
         <Panel position="top-right">

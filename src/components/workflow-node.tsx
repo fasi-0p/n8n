@@ -22,12 +22,12 @@ export function WorkflowNode({
   return (
     <div className="group relative">
       {/* Action buttons — appear on hover */}
-      <div className="absolute -top-8 right-0 hidden group-hover:flex items-center gap-1 z-10">
+      <div className="absolute -top-8 right-0 hidden group-hover:flex items-center gap-1 z-10 after:content-[''] after:absolute after:-bottom-4 after:left-0 after:w-full after:h-4">
         {onSettings && (
           <button
             onClick={onSettings}
-            className="p-1.5 rounded-md bg-zinc-900 border border-zinc-800
-                       text-zinc-400 hover:text-white hover:border-zinc-600 transition-all"
+            className="p-1.5 rounded-md bg-[#1e293b] border border-[#334155]
+                       text-slate-400 hover:text-[#38bdf8] hover:border-[#38bdf8] transition-all"
             title="Configure"
           >
             <Settings2Icon className="size-3" />
@@ -36,9 +36,9 @@ export function WorkflowNode({
         {onDelete && (
           <button
             onClick={onDelete}
-            className="p-1.5 rounded-md bg-zinc-900 border border-zinc-800
-                       text-zinc-400 hover:text-[#ff003c] hover:border-[rgba(255,0,60,0.4)]
-                       hover:bg-[rgba(255,0,60,0.1)] transition-all"
+            className="p-1.5 rounded-md bg-[#1e293b] border border-[#334155]
+                       text-slate-400 hover:text-[#f43f5e] hover:border-[rgba(244,63,94,0.4)]
+                       hover:bg-[rgba(244,63,94,0.1)] transition-all"
             title="Delete node"
           >
             <Trash2Icon className="size-3" />
@@ -50,7 +50,7 @@ export function WorkflowNode({
       {(name || description) && (
         <div className="absolute -top-6 left-0 flex flex-col" style={{ pointerEvents: 'none' }}>
           {description && (
-            <span className="text-[10px] text-zinc-500 font-mono-jetbrains truncate max-w-[200px]">
+            <span className="text-[10px] text-slate-400 font-mono-jetbrains truncate max-w-[200px]">
               {description}
             </span>
           )}

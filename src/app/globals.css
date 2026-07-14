@@ -114,14 +114,14 @@
   --sidebar: oklch(0.07 0 0);
   --sidebar-foreground: oklch(0.92 0 0);
 
-  --sidebar-primary: #00f0ff;
+  --sidebar-primary: #38bdf8;
   --sidebar-primary-foreground: oklch(0.07 0 0);
 
-  --sidebar-accent: oklch(0.12 0.01 250);
+  --sidebar-accent: rgba(56, 189, 248, 0.06);
   --sidebar-accent-foreground: oklch(1 0 0);
 
   --sidebar-border: oklch(0.18 0 0);
-  --sidebar-ring: #00f0ff;
+  --sidebar-ring: #38bdf8;
 
   /* ─── Typography ─── */
 
@@ -186,7 +186,7 @@
   --border: oklch(0.2 0 0);
   --input: oklch(0.2 0 0);
 
-  --ring: #00f0ff;
+  --ring: #38bdf8;
 
   /* ─── Sidebar Shell ─── */
 
@@ -194,12 +194,12 @@
   --sidebar-foreground: oklch(1 0 0);
   --sidebar-border: oklch(0.2 0 0);
 
-  --sidebar-accent: rgba(0, 240, 255, 0.06);
+  --sidebar-accent: rgba(56, 189, 248, 0.06);
   --sidebar-accent-foreground: oklch(1 0 0);
 
-  --sidebar-primary: #00f0ff;
+  --sidebar-primary: #38bdf8;
   --sidebar-primary-foreground: oklch(0.07 0 0);
-  --sidebar-ring: #00f0ff;
+  --sidebar-ring: #38bdf8;
 
   /* ─── Charts (unchanged) ─── */
 
@@ -266,31 +266,31 @@
 /* ─── NeonGrid Design System ─── */
 
 :root {
-  --neon-cyan:    #00f0ff;
-  --neon-purple:  #bf00ff;
-  --neon-magenta: #ff003c;
-  --neon-green:   #39ff14;
-  --neon-bg:      #09090b;
-  --neon-panel:   #18181b;
-  --neon-border:  #27272a;
-  --neon-muted:   #71717a;
+  --neon-cyan:    #38bdf8;
+  --neon-purple:  #8b5cf6;
+  --neon-magenta: #f43f5e;
+  --neon-green:   #10b981;
+  --neon-bg:      #0f172a;
+  --neon-panel:   #1e293b;
+  --neon-border:  #334155;
+  --neon-muted:   #94a3b8;
 
-  --glow-cyan:    rgba(0, 240, 255, 0.3);
-  --glow-purple:  rgba(191, 0, 255, 0.3);
-  --glow-green:   rgba(57, 255, 20, 0.4);
-  --glow-magenta: rgba(255, 0, 60, 0.3);
+  --glow-cyan:    rgba(56, 189, 248, 0.3);
+  --glow-purple:  rgba(139, 92, 246, 0.3);
+  --glow-green:   rgba(16, 185, 129, 0.4);
+  --glow-magenta: rgba(244, 63, 94, 0.3);
 }
 
 /* Canvas dot-grid blueprint background */
 .neon-canvas {
   background-color: var(--neon-bg);
-  background-image: radial-gradient(circle, #27272a 1px, transparent 1px);
+  background-image: radial-gradient(circle, #334155 1px, transparent 1px);
   background-size: 28px 28px;
 }
 
 /* Glassmorphism shell (sidebar + header) */
 .neon-glass {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(15, 23, 42, 0.7);
   backdrop-filter: blur(12px);
 }
 
@@ -343,12 +343,12 @@
 .neon-nav-active {
   color: var(--neon-cyan);
   border-left: 2px solid var(--neon-cyan);
-  background: rgba(0, 240, 255, 0.06);
+  background: rgba(56, 189, 248, 0.08);
 }
 
 /* React Flow edge overrides */
 .react-flow__edge-path {
-  stroke: #3f3f46;
+  stroke: #475569;
   stroke-width: 2;
 }
 
@@ -379,7 +379,7 @@
 }
 
 .react-flow__handle-left {
-  background: #3f3f46;
+  background: #64748b;
 }
 
 /* AI node purple handle */
@@ -395,7 +395,7 @@
 
 /* Terminal/log window */
 .neon-terminal {
-  background: #000;
+  background: #0f172a;
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   line-height: 1.7;
@@ -418,8 +418,8 @@
 
 .badge-neon-running {
   color: var(--neon-cyan);
-  background: rgba(0, 240, 255, 0.08);
-  border: 1px solid rgba(0, 240, 255, 0.25);
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.25);
 }
 
 .badge-neon-ai {
