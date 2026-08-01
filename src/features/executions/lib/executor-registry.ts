@@ -9,6 +9,8 @@ import {OpenAiExecutor} from "@/features/executions/components/openai/executor";
 import {AnthropicExecutor} from "@/features/executions/components/anthropic/executor";
 import {discordExecutor} from "@/features/executions/components/discord/executor";
 import {slackExecutor} from "@/features/executions/components/slack/executor";
+import {newspaperTriggerExecutor} from "@/features/triggers/components/newspaper-trigger/executor";
+import {WhatsAppExecutor} from "@/features/executions/components/whatsapp/executor";
 
 export const executorRegistry: Record<NodeType, NodeExecutor> = {
   [NodeType.INITIAL]: manualTriggerExecutor,
@@ -21,6 +23,8 @@ export const executorRegistry: Record<NodeType, NodeExecutor> = {
   [NodeType.OPENAI]: OpenAiExecutor, 
   [NodeType.DISCORD]: discordExecutor,
   [NodeType.SLACK]: slackExecutor,
+  [NodeType.NEWSPAPER_TRIGGER]: newspaperTriggerExecutor,
+  [NodeType.WHATSAPP]: WhatsAppExecutor,
 };
 
 export const getExecutor = (type: NodeType): NodeExecutor => {

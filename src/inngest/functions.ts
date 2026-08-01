@@ -13,6 +13,8 @@ import {openAiChannel} from "./channels/openai"
 import {anthropicChannel} from "./channels/anthropic"
 import {discordChannel} from "./channels/discord"
 import {slackChannel} from "./channels/slack"
+import {newspaperTriggerChannel} from "./channels/newspaper-trigger"
+import {whatsappChannel} from "./channels/whatsapp"
 import {ExecutionStatus} from "@/generated/prisma"
 
 export const runtime = "nodejs";
@@ -34,7 +36,7 @@ export const executeWorkflow = inngest.createFunction(
   },
   {
     event: "workflows/execute.workflow",
-    channels: [httpRequestChannel(), manualTriggerChannel(), googleFormTriggerChannel(), stripeTriggerChannel(), geminiChannel(), openAiChannel(), anthropicChannel(), discordChannel(), slackChannel()]  //update here everytime you add a new inngest channel
+    channels: [httpRequestChannel(), manualTriggerChannel(), googleFormTriggerChannel(), stripeTriggerChannel(), geminiChannel(), openAiChannel(), anthropicChannel(), discordChannel(), slackChannel(), newspaperTriggerChannel(), whatsappChannel()]  //update here everytime you add a new inngest channel
   },
   async ({event, step, publish}) =>{
     const inngestEventId = event.id;

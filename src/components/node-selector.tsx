@@ -41,6 +41,13 @@ const triggerNodes: NodeTypeOption[] = [
     icon: '/logos/stripe.svg',
     accent: '#6772e5',
   },
+  {
+    type: NodeType.NEWSPAPER_TRIGGER,
+    label: 'Financial News',
+    description: 'Trigger when financial news arrives',
+    icon: GlobeIcon,
+    accent: '#10b981',
+  },
 ];
 
 const executionNodes: NodeTypeOption[] = [
@@ -85,6 +92,13 @@ const executionNodes: NodeTypeOption[] = [
     description: 'Send a message to Slack via webhook',
     icon: '/logos/slack.svg',
     accent: '#9c5de0',
+  },
+  {
+    type: NodeType.WHATSAPP,
+    label: 'WhatsApp',
+    description: 'Send a message to WhatsApp',
+    icon: '/logos/slack.svg', 
+    accent: '#25d366',
   },
 ];
 
