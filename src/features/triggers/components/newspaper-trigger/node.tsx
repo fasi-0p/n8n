@@ -22,7 +22,7 @@ export const NewspaperTriggerNode = memo((props: NodeProps) => {
       <NewspaperTriggerDialog open={dialogOpen} onOpenChange={setDialogOpen}/>
       <BaseTriggerNode
         {...props}
-        icon={"/logos/newspaper.svg"}
+        icon={"/logos/news.svg"}
         name="Newspaper"
         description="when newspaper event happens"
         status={nodeStatus}

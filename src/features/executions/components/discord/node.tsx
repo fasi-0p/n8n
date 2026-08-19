@@ -50,7 +50,7 @@ export const DiscordNode = memo((props: NodeProps<GeminiNodeType>) => {
 
   const nodeData = props.data;
   const description = nodeData?.content
-    ? `gemini-2.5-flash: ${nodeData.content.slice(0,50)}...`
+    ? `${nodeData.content.slice(0,50)}...`
     : "Not configured";
 
   return (
